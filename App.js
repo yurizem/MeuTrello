@@ -1,5 +1,5 @@
-import React, {useState, useCallback} from 'react';
-import {Text, View, SafeAreaView, StyleSheet, StatusBar, TouchableOpacity, FlatList, Modal, TextInput, TouchableWithoutFeedback, Alert } from 'react-native';
+import React, {useState, useCallback, useEffect} from 'react';
+import {Text, View, SafeAreaView, StyleSheet, StatusBar, TouchableOpacity, FlatList, Modal, TextInput, AsyncStorage } from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import TaskList from './src/components/TaskList/index.js'
 import * as Animatable from 'react-native-animatable'
@@ -13,6 +13,33 @@ export default function App() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   
+// Buscando todas as tarefas ao iniciar o app
+  useEffect(() => {
+
+    async function loadTasks(){
+
+      const taskStorage = await AsyncStorage.getItem('@task');
+
+      if(taskStorage){
+        setTask(JSON.parse(taskStorage));
+      }
+    } 
+
+    loadTasks();
+ 
+  }, []);
+ 
+  //Salvando caso tenha alguma tarefa alterada 
+  useEffect(() => {
+
+      async function saveTasks(){
+        await AsyncStorage.setItem('@task', JSON.stringify)
+      }
+      saveTasks();
+    }, [task]);
+
+
+
   function handleAdd(){
     if(input==='') return;
     
