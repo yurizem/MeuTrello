@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Text, View, SafeAreaView, StyleSheet, StatusBar, TouchableOpacity, FlatList, Modal, TextInput, TouchableWithoutFeedback } from 'react-native';
+import React, {useState, useCallback} from 'react';
+import {Text, View, SafeAreaView, StyleSheet, StatusBar, TouchableOpacity, FlatList, Modal, TextInput, TouchableWithoutFeedback, Alert } from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import TaskList from './src/components/TaskList/index.js'
 import * as Animatable from 'react-native-animatable'
@@ -26,6 +26,12 @@ export default function App() {
     setInput('');
   }
 
+  const handleDelete = useCallback((data)=> {
+    const find = task.filter(r => r.key !== data.key)
+    setTask(find);
+    alert('Dados removidos com sucesso ')
+  })
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#171d31" barStyle="light-content" />
@@ -39,7 +45,7 @@ export default function App() {
       showsHorizontalScrollIndicator={false}
       data={task}
       keyExtractor={ (item) => String(item.key)}
-      renderItem={ ({ item }) => <TaskList data={item} /> } 
+      renderItem={ ({ item }) => <TaskList data={item} handleDelete={handleDelete} /> } 
       />
 
       <Modal
